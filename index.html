@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beranda | Sumunar Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        #desktop-sidebar { transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); }
+        #sidebar-overlay { transition: opacity 0.35s ease; }
+        @media (min-width: 1024px) {
+            #page-wrapper { margin-left: 260px; }
+            #desktop-sidebar { transform: translateX(0) !important; }
+        }
+        @media (max-width: 1023px) {
+            #page-wrapper { margin-left: 0; }
+            #desktop-sidebar { position: fixed; }
+        }
+        .sidebar-link { display:flex; align-items:center; gap:12px; padding:10px 14px; border-radius:12px; font-size:14px; font-weight:500; color:#475569; cursor:pointer; transition:all 0.15s ease; text-decoration:none; }
+        .sidebar-link:hover { background:#f1f5f9; color:#1e293b; }
+        .sidebar-link.active { background:#eff6ff; color:#1d4ed8; font-weight:600; }
+        .sidebar-link .icon { width:18px; height:18px; flex-shrink:0; }
+        .prod-badge { font-size:10px; font-weight:700; padding:2px 8px; border-radius:999px; letter-spacing:0.05em; }
+        .sidebar-section-label { font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#94a3b8; padding:0 14px; margin-bottom:4px; margin-top:16px; }
+        .product-card { transition: all 0.25s ease; }
+        .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12); }
+        .orb { position:absolute; border-radius:50%; filter:blur(80px); opacity:0.3; pointer-events:none; }
+    </style>
+
+<style>
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s ease}
+.reveal.show{opacity:1;transform:translateY(0)}
+</style>
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { brand: { blue:'#1d4ed8', dark:'#0f172a', green:'#16a34a', greenHover:'#15803d', light:'#f8fafc' } } } } }
+    </script>
+</head>
+<body class="bg-brand-light text-slate-800 antialiased selection:bg-brand-blue selection:text-white">
+
+    <div id="sidebar-overlay" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-[60] opacity-0 pointer-events-none lg:hidden"></div>
+
+    <aside id="desktop-sidebar" class="fixed top-0 left-0 bottom-0 w-[260px] bg-white z-[70] shadow-lg border-r border-slate-100 flex flex-col -translate-x-full lg:translate-x-0">
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 bg-brand-blue rounded-xl flex items-center justify-center text-white font-black text-base shadow">S</div>
+                <div>
+                    <p class="font-bold text-slate-900 text-sm leading-tight">Sumunar Digital</p>
+                    <p class="text-[10px] text-slate-400 font-medium">Template UMKM</p>
+                </div>
+            </div>
+            <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <nav class="flex-1 overflow-y-auto p-3">
+            <p class="sidebar-section-label">Halaman</p>
+            <a href="index.html" class="sidebar-link active">
+                <i data-lucide="home" class="icon"></i><span>Beranda</span>
+            </a>
+            <p class="sidebar-section-label">Produk</p>
+            <a href="omzet-harian.html" class="sidebar-link">
+                <i data-lucide="table-2" class="icon"></i>
+                <div class="flex-1 min-w-0">
+                    <p class="leading-tight truncate">Template Omzet Harian</p>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Google Sheet · UMKM</p>
+                </div>
+                <span class="prod-badge bg-blue-100 text-blue-700">P1</span>
+            </a>
+            <a href="omzet-harian-all-series-bundle.html" class="sidebar-link">
+                <i data-lucide="file-spreadsheet" class="icon"></i>
+                <div class="flex-1 min-w-0">
+                    <p class="leading-tight truncate">Template Omzet Harian – ALL Series (6 Usaha)</p>
+                    <p class="text-[11px] text-slate-400 font-normal leading-tight">Google Sheet · 6 Template Usaha</p>
+                </div>
+                <span class="prod-badge bg-emerald-100 text-emerald-700">P2</span>
+            </a>
+            <div class="sidebar-link opacity-40 cursor-default select-none mt-1">
+                <i data-lucide="plus-circle" class="icon text-slate-300"></i>
+                <p class="text-slate-400">Segera Hadir…</p>
+            </div>
+        </nav>
+        <div class="p-4 border-t border-slate-100 bg-slate-50">
+            <a href="#produk" onclick="event.preventDefault(); scrollToId('produk'); toggleSidebarIfMobile();"
+               class="flex items-center justify-center gap-2 w-full py-2.5 bg-brand-blue hover:bg-brand-dark text-white text-sm font-semibold rounded-xl transition-colors">
+                <i data-lucide="grid" class="w-4 h-4"></i> Lihat Semua Produk
+            </a>
+            <p class="text-center text-[10px] text-slate-400 mt-3">© 2026 Sumunar Digital</p>
+        </div>
+    </aside>
+
+    <div id="page-wrapper" class="lg:ml-[260px] flex flex-col">
+
+        <!-- Navbar -->
+        <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16 items-center">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-2 text-slate-600 hover:text-brand-blue transition-colors">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="flex items-center gap-3 lg:hidden">
+                        <div class="w-8 h-8 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold text-sm">S</div>
+                        <span class="font-bold text-lg text-brand-dark">Sumunar Digital</span>
+                    </div>
+                    <div class="hidden lg:flex items-center gap-8 ml-auto">
+                        <a href="index.html" class="text-sm font-semibold text-brand-blue">Beranda</a>
+                        <a href="omzet-harian.html" class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">Template Omzet</a>
+                        <a href="omzet-harian-all-series-bundle.html" class="text-sm font-medium text-slate-600 hover:text-brand-blue transition-colors">Omzet Bundle</a>
+                        <button onclick="scrollToId('produk')" class="px-5 py-2 bg-brand-blue text-white rounded-lg text-sm font-semibold hover:bg-brand-dark transition-all cursor-pointer">Cek Produk</button>
+                    </div>
+                    <div class="w-8 lg:hidden"></div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="relative pt-14 pb-20 lg:pt-24 lg:pb-28 overflow-hidden">
+            <div class="orb w-[500px] h-[500px] bg-blue-300 -top-32 -right-32"></div>
+            <div class="orb w-[400px] h-[400px] bg-indigo-200 bottom-0 -left-20"></div>
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-3xl mx-auto text-center">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 text-brand-blue text-sm font-semibold mb-8 border border-blue-100 shadow-sm">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-blue opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-blue"></span>
+                        </span>
+                        Solusi Digital untuk UMKM Indonesia
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold text-brand-dark tracking-tight leading-[1.08] mb-6">
+                        Bantu UMKM Jadi
+                        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-brand-blue via-blue-500 to-indigo-500">
+                            Lebih Rapi & Produktif
+                        </span>
+                    </h1>
+                    <p class="text-lg sm:text-xl text-slate-600 leading-relaxed mb-10 max-w-2xl mx-auto">
+                        Sumunar Digital hadir untuk memberdayakan pemilik usaha kecil dan kreator pemula dengan alat digital yang praktis, mudah digunakan, dan langsung berdampak pada efisiensi kerja.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <button onclick="scrollToId('produk')"
+                                class="px-10 py-4 bg-brand-blue hover:bg-brand-dark text-white rounded-2xl font-bold text-lg shadow-xl shadow-blue-600/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-3">
+                            <i data-lucide="grid" class="w-5 h-5"></i> Cek Produk Kami
+                        </button>
+                        <button onclick="scrollToId('tentang')"
+                                class="px-10 py-4 bg-white text-slate-700 border border-slate-200 hover:border-brand-blue hover:text-brand-blue rounded-2xl font-semibold text-lg shadow-sm transition-all flex items-center justify-center gap-2">
+                            Tentang Kami
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="mt-20 grid grid-cols-3 gap-4 sm:gap-6 max-w-2xl mx-auto">
+                    <div class="text-center p-4 sm:p-5 bg-white rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-brand-blue mb-1">2+</p>
+                        <p class="text-xs text-slate-500 font-medium leading-tight">Template Siap Pakai</p>
+                    </div>
+                    <div class="text-center p-4 sm:p-5 bg-white rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-brand-blue mb-1">100%</p>
+                        <p class="text-xs text-slate-500 font-medium leading-tight">Google Sheet</p>
+                    </div>
+                    <div class="text-center p-4 sm:p-5 bg-white rounded-2xl shadow-sm border border-slate-100">
+                        <p class="text-2xl sm:text-3xl font-extrabold text-brand-blue mb-1">∞</p>
+                        <p class="text-xs text-slate-500 font-medium leading-tight">Lifetime Access</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <!-- Social Proof -->
+        <section class="py-12 bg-white border-y">
+            <div class="max-w-4xl mx-auto text-center px-4">
+                <p class="text-sm text-slate-500 mb-6">
+                Dipakai oleh pemilik warung, UMKM, dan kreator pemula di Indonesia
+                </p>
+                <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-600">
+                    <span>⭐️⭐️⭐️⭐️⭐️ Mudah dipakai</span>
+                    <span>⭐️⭐️⭐️⭐️⭐️ Tanpa rumus</span>
+                    <span>⭐️⭐️⭐️⭐️⭐️ Laporan otomatis</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tentang -->
+        <section id="tentang" class="py-24 bg-white">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <p class="text-xs font-bold uppercase tracking-widest text-brand-blue mb-3">Tentang Kami</p>
+                        <h2 class="text-3xl font-bold text-brand-dark mb-5 leading-snug">Kami percaya setiap pemilik usaha berhak punya sistem yang rapi</h2>
+                        <p class="text-slate-600 leading-relaxed mb-5">
+                            Sumunar Digital adalah brand produk digital yang fokus membuat template dan alat bantu kerja berbasis Google Sheet. Dibuat khusus untuk pemilik UMKM, warung, toko kecil, dan kreator yang tidak punya waktu belajar software akuntansi yang rumit.
+                        </p>
+                        <p class="text-slate-600 leading-relaxed mb-8">
+                            Setiap template kami dirancang agar bisa langsung dipakai hari ini — tanpa perlu kursus, tanpa install aplikasi, dan tanpa biaya langganan.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">Praktis</span>
+                            <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">Terjangkau</span>
+                            <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">Langsung Pakai</span>
+                            <span class="px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-semibold">Support Aktif</span>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="p-6 bg-brand-light rounded-3xl border border-slate-100">
+                            <div class="w-12 h-12 bg-blue-100 text-brand-blue rounded-2xl flex items-center justify-center mb-4"><i data-lucide="zap"></i></div>
+                            <h3 class="font-bold text-slate-800 mb-1">Cepat Setup</h3>
+                            <p class="text-sm text-slate-500">Template bisa digunakan dalam hitungan menit.</p>
+                        </div>
+                        <div class="p-6 bg-brand-light rounded-3xl border border-slate-100">
+                            <div class="w-12 h-12 bg-emerald-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="shield-check"></i></div>
+                            <h3 class="font-bold text-slate-800 mb-1">Data Aman</h3>
+                            <p class="text-sm text-slate-500">Tersimpan di Google Drive milik Anda sendiri.</p>
+                        </div>
+                        <div class="p-6 bg-brand-light rounded-3xl border border-slate-100">
+                            <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="smartphone"></i></div>
+                            <h3 class="font-bold text-slate-800 mb-1">HP & Laptop</h3>
+                            <p class="text-sm text-slate-500">Akses kapan saja, dari perangkat apa saja.</p>
+                        </div>
+                        <div class="p-6 bg-brand-light rounded-3xl border border-slate-100">
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-4"><i data-lucide="message-circle"></i></div>
+                            <h3 class="font-bold text-slate-800 mb-1">Ada Support</h3>
+                            <p class="text-sm text-slate-500">Grup WhatsApp untuk tanya jawab sesama pengguna.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produk -->
+        <section id="produk" class="py-24 bg-brand-light">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-14">
+                    <p class="text-xs font-bold uppercase tracking-widest text-brand-blue mb-3">Produk Kami</p>
+                    <h2 class="text-3xl sm:text-4xl font-bold text-brand-dark mb-4">Pilih Template yang Kamu Butuhkan</h2>
+                    <p class="text-slate-500 max-w-xl mx-auto">Semua template dirancang agar bisa langsung digunakan oleh siapa pun, bahkan yang belum pernah pakai spreadsheet sekalipun.</p>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <!-- Produk 1 -->
+                    <a href="omzet-harian.html" class="product-card group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm block relative"><span class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">Promo</span>
+                        <div class="h-3 bg-gradient-to-r from-brand-blue to-blue-400"></div>
+                        <div class="p-8">
+                            <div class="flex items-start justify-between mb-5">
+                                <div class="w-14 h-14 bg-blue-50 text-brand-blue rounded-2xl flex items-center justify-center group-hover:bg-brand-blue group-hover:text-white transition-colors">
+                                    <i data-lucide="table-2" class="w-7 h-7"></i>
+                                </div>
+                                <span class="prod-badge bg-blue-100 text-blue-700 self-start mt-1">P1</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Template Omzet Harian</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed mb-6">Catat pemasukan & pengeluaran harian. Laporan bulanan otomatis, grafik tren penjualan, dan profit bersih langsung muncul.</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-slate-400 line-through">Rp 35.000</p>
+                                    <p class="text-2xl font-extrabold text-brand-blue">Rp 19.000</p>
+                                </div>
+                                <span class="flex items-center gap-1 text-sm font-semibold text-brand-blue group-hover:gap-2 transition-all">
+                                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Produk 2 -->
+                    <a href="omzet-harian-all-series-bundle.html" class="product-card group bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm block relative"><span class="absolute top-4 right-4 bg-red-100 text-red-600 text-xs font-bold px-2 py-1 rounded">Promo</span>
+                        <div class="h-3 bg-gradient-to-r from-emerald-500 to-teal-400"></div>
+                        <div class="p-8">
+                            <div class="flex items-start justify-between mb-5">
+                                <div class="w-14 h-14 bg-emerald-50 text-indigo-600 rounded-2xl flex items-center justify-center group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+                                    <i data-lucide="file-spreadsheet" class="w-7 h-7"></i>
+                                </div>
+                                <span class="prod-badge bg-emerald-100 text-emerald-700 self-start mt-1">P2</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-brand-dark mb-2">Template Omzet Harian – ALL Series (6 Usaha)</h3>
+                            <p class="text-slate-500 text-sm leading-relaxed mb-6">Bundle 6 template omzet harian untuk berbagai usaha: Warung Makanan, Angkringan, Bakery, Sembako, ATK, dan Laundry.</p>
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-xs text-slate-400 line-through">Rp 65.000</p>
+                                    <p class="text-2xl font-extrabold text-indigo-600">Rp 39.000</p>
+                                </div>
+                                <span class="flex items-center gap-1 text-sm font-semibold text-indigo-600 group-hover:gap-2 transition-all">
+                                    Lihat Detail <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Bundle teaser -->
+                <!--
+                <div class="mt-8 max-w-3xl mx-auto p-6 bg-gradient-to-r from-brand-dark to-slate-800 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-5 text-white shadow-xl">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <i data-lucide="package-2" class="w-6 h-6 text-yellow-400"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-lg leading-tight">Beli Keduanya — Hemat Lebih!</p>
+                            <p class="text-sm text-slate-400">Bundle P1 + P2 dengan harga spesial</p>
+                        </div>
+                    </div>
+                    <a href="https://lynk.id/sumunardigital" target="_blank"
+                       class="flex-shrink-0 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-brand-dark rounded-xl font-bold text-sm transition-colors whitespace-nowrap">
+                        Lihat Bundle →
+                    </a>
+                </div>-->
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-20 bg-brand-blue relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_right,_rgba(99,102,241,0.4),transparent_60%)]"></div>
+            <div class="max-w-3xl mx-auto px-4 text-center relative z-10">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">Mulai Kelola Usaha Lebih Rapi Hari Ini</h2>
+                <p class="text-blue-200 text-lg mb-10">Bergabung dengan ratusan pemilik UMKM yang sudah menggunakan template Sumunar Digital.</p>
+                <button onclick="scrollToId('produk')" class="px-12 py-4 bg-white text-brand-blue rounded-2xl font-bold text-lg hover:bg-blue-50 transition-all shadow-2xl hover:-translate-y-1">
+                    Cek Produk Sekarang
+                </button>
+            </div>
+        </section>
+
+        
+        <!-- FAQ -->
+        <section class="py-20 bg-white">
+            <div class="max-w-3xl mx-auto px-4">
+                <h2 class="text-2xl font-bold text-center mb-10">
+                    Pertanyaan Umum
+                </h2>
+                <div class="space-y-6 text-slate-700">
+                    <div>
+                        <p class="font-semibold">Apakah template bisa dipakai di HP?</p>
+                        <p class="text-sm text-slate-600">Bisa. Semua template berbasis Google Sheet dan dapat dibuka di HP maupun laptop.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Apakah perlu mengerti Excel?</p>
+                        <p class="text-sm text-slate-600">Tidak perlu. Semua rumus sudah otomatis sehingga tinggal isi angka.</p>
+                    </div>
+                    <div>
+                        <p class="font-semibold">Apakah ada biaya bulanan?</p>
+                        <p class="text-sm text-slate-600">Tidak. Bayar sekali dan bisa dipakai selamanya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-slate-950 text-slate-400 py-16">
+            <div class="max-w-6xl mx-auto px-4 text-center">
+                <div class="flex items-center justify-center gap-3 mb-8">
+                    <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-brand-blue font-black">S</div>
+                    <span class="text-white font-bold text-2xl tracking-tighter">Sumunar Digital</span>
+                </div>
+                <nav class="flex flex-wrap justify-center gap-8 mb-12 text-sm font-medium">
+                    <a href="index.html" class="hover:text-white transition-colors">Beranda</a>
+                    <a href="omzet-harian.html" class="hover:text-white transition-colors">Template Omzet Harian</a>
+                    <a href="omzet-harian-all-series-bundle.html" class="hover:text-white transition-colors">Template Omzet Harian – ALL Series (6 Usaha)</a>
+                </nav>
+                <div class="pt-8 border-t border-slate-900">
+                    <p class="text-sm">© 2026 Sumunar Digital. Dibuat dengan penuh ❤️ untuk UMKM Indonesia.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+        const sidebar = document.getElementById('desktop-sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
+        let isSidebarOpen = false;
+        function toggleSidebar() {
+            isSidebarOpen = !isSidebarOpen;
+            if (isSidebarOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.remove('opacity-0','pointer-events-none');
+                overlay.classList.add('opacity-100');
+                document.body.style.overflow = 'hidden';
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.remove('opacity-100');
+                overlay.classList.add('opacity-0','pointer-events-none');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        function toggleSidebarIfMobile() { if (window.innerWidth < 1024 && isSidebarOpen) toggleSidebar(); }
+        overlay.addEventListener('click', toggleSidebar);
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) { document.body.style.overflow = 'auto'; overlay.classList.add('opacity-0','pointer-events-none'); isSidebarOpen = false; }
+        });
+        function scrollToId(id) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: 'smooth' });
+        }
+    </script>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver(entries=>{
+entries.forEach(e=>{
+if(e.isIntersecting){e.target.classList.add('show')}
+})
+},{threshold:0.1});
+reveals.forEach(r=>observer.observe(r));
+</script>
+
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-3 lg:hidden z-50">
+<a href="#produk" onclick="scrollToId('produk')" class="block text-center bg-brand-blue text-white py-3 rounded-xl font-bold">
+Lihat Produk Sumunar Digital
+</a>
+</div>
+</body>
+</html>
